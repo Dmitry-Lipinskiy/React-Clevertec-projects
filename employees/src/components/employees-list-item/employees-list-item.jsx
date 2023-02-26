@@ -9,7 +9,7 @@ class EmployeesListItem extends Component {
     super(props);
     this.state = {
       increase: false,
-      rise: false
+      like: false
     };
   }
 
@@ -20,24 +20,17 @@ class EmployeesListItem extends Component {
   };
 
   isRise = () => {
-    this.setState(({rise}) => ({
-      rise: !rise
+    this.setState(({like}) => ({
+      like: !like
     }));
   };
 
   render() {
     const {name, salary} = this.props;
-    const {increase, rise} = this.state;
+    const {increase, like} = this.state;
   
     return (
-      <li className={classNames(
-        'list-group-item d-flex justify-content-between', 
-          {
-            'increase': increase, 
-            'like': rise
-          }
-        )}
-      >
+      <li className={classNames('list-group-item d-flex justify-content-between', {increase,  like})}>
         <span 
           className='list-group-item-label'
           onClick={this.isRise}
