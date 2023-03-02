@@ -2,7 +2,7 @@ import { Component } from 'react';
 
 import './employees-add-form.css';
 
-class EmployeesAddForm extends Component {
+export class EmployeesAddForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +31,7 @@ class EmployeesAddForm extends Component {
   render() {
     const {name, salary} = this.state;
 
-    return(
+    return (
       <div className='app-add-form'>
         <h3>Добавьте нового сотрудника</h3>
         <form 
@@ -66,5 +66,3 @@ class EmployeesAddForm extends Component {
     );
   }
 };
-
-export default EmployeesAddForm;

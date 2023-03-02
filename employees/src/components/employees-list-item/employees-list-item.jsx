@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import './employees-list-item.css';
 
-class EmployeesListItem extends Component { 
+export class EmployeesListItem extends Component { 
   constructor(props) {
     super(props);
     this.state = {
@@ -61,6 +61,4 @@ class EmployeesListItem extends Component {
       </li>
     );
   }
-}
-
-export default EmployeesListItem;
+};

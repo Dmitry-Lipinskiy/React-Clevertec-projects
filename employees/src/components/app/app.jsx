@@ -2,16 +2,15 @@ import { Component } from 'react';
 
 import { AppFilter } from '../app-filter';
 import { AppInfo } from '../app-info';
+import { EmployeesAddForm } from '../employees-add-form';
 import { EmployeesList } from '../employees-list';
 import { SearchPanel } from '../search-panel';
-
-import EmployeesAddForm from '../employees-add-form/employees-add-form';
 
 import { employeesData } from '../../data/employees-data';
 
 import './app.css';
 
-class App extends Component {
+export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,10 +20,8 @@ class App extends Component {
   }
 
   deleteItem = (id) => {
-    this.setState(({data}) => {
-      return {
-        data: data.filter((item) => item.id !== id)
-      };
+    this.setState(({data}) => ({
+      data: data.filter((item) => item.id !== id)
       // // еще один метод
       // const index = data.findIndex((el) => el.id === id);
       // console.log(index);
@@ -34,25 +31,22 @@ class App extends Component {
       // return {
       //   data: newArray
       // };
-    });
+    }));
   }
 
   addItem = (name, salary) => {
     const newItem = {
-      name: name,
-      salary: salary,
+      name,
+      salary,
       increase: false,
       id: this.maxId++
     };
-    this.setState(({data}) => {
-      const newArr = [...data, newItem];
-      return {
-        data: newArr
-      };
-    })
+    this.setState(({data}) => ({
+      data: [...data, newItem]
+    }));
   }
 
-  render() {
+  render() { 
     return (
       <div className='app'>
         <AppInfo />
@@ -66,12 +60,10 @@ class App extends Component {
           employeesData={this.state.data} 
           onDelete={this.deleteItem}
         />
-        <EmployeesAddForm 
+        <EmployeesAddForm
           addItem={this.addItem}
         />
       </div>
     );
   }
-}
-
-export default App;
+};
