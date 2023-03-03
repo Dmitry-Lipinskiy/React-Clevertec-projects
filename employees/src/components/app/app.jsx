@@ -46,24 +46,22 @@ export class App extends Component {
     }));
   }
 
-  render() { 
-    return (
-      <div className='app'>
-        <AppInfo />
+  render = () => (
+    <div className='app'>
+      <AppInfo />
 
-        <div className='search-panel'>
-          <SearchPanel />
-          <AppFilter />
-        </div>
-
-        <EmployeesList 
-          employeesData={this.state.data} 
-          onDelete={this.deleteItem}
-        />
-        <EmployeesAddForm
-          addItem={this.addItem}
-        />
+      <div className='search-panel'>
+        <SearchPanel />
+        <AppFilter />
       </div>
-    );
-  }
+
+      <EmployeesList 
+        employeesData={this.state.data} 
+        onDelete={this.deleteItem}
+      />
+      <EmployeesAddForm
+        addItem={this.addItem}
+      />
+    </div>
+  );
 };
