@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import './employees-list-item.css';
 
-class EmployeesListItem extends Component { 
+export class EmployeesListItem extends Component { 
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +26,7 @@ class EmployeesListItem extends Component {
   };
 
   render() {
-    const {name, salary} = this.props;
+    const {name, salary, onDelete} = this.props;
     const {increase, like} = this.state;
   
     return (
@@ -49,7 +49,11 @@ class EmployeesListItem extends Component {
             <i className='fas fa-cookie'></i>
           </button>
 
-          <button type='button' className='btn-trash btn-sm '>
+          <button 
+            type='button' 
+            className='btn-trash btn-sm '
+            onClick={onDelete}
+          >
             <i className='fas fa-trash'></i>
           </button>
           <i className='fas fa-star'></i>
@@ -57,6 +61,4 @@ class EmployeesListItem extends Component {
       </li>
     );
   }
-}
-
-export default EmployeesListItem;
+};
