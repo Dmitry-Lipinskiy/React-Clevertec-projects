@@ -1,15 +1,27 @@
+import { buttonsData } from '../../data/buttons-data';
+
 import './app-filter.css';
 
-export const AppFilter = () => (
+export const AppFilter = (props) => (
+
   <div className='btn-group'>
-    <button type='button' className='btn btn-light'>
-      Все сотрудники
-    </button>
-    <button type='button' className='btn btn-outline-light'>
-      На повышение
-    </button>
-    <button type='button' className='btn btn-outline-light'>
-      З/П больше 1000$
-    </button>
+    {buttonsData.map(({name, label}) => {
+
+      const active = props.filter === name;
+      const classActive = active ? 'btn-light' : 'btn-outline-light';
+
+      return (
+        <button 
+          type='button' 
+          className={`btn ${classActive}`}
+          key={name}
+          onClick={() => props.onFilterSelect(name)}
+        >
+          {label}
+        </button>
+      );
+
+    })}
   </div>
+
 );
