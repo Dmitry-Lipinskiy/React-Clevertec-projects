@@ -28,7 +28,7 @@ export class EmployeesAddForm extends Component {
     }
   }
 
-  render() {
+  render = () => {
     
     const {name, salary} = this.state;
 

@@ -136,7 +136,7 @@ export class App extends Component {
     this.setState({filter});
   }
 
-  render() {
+  render = () => {
 
     const {data, bonus, allEmployees, search, filter} = this.state;
     // без фильтра кнопок
