@@ -16,7 +16,9 @@ export class App extends Component {
     this.state = {
       data: employeesData,
       allEmployees: employeesData.length,
-      bonus: employeesData.filter((item) => item.increase === true).length
+      bonus: employeesData.filter((item) => item.increase).length,
+      search: '',
+      filter: 'all'
     };
     this.maxId = employeesData.length + 1;
   }
@@ -24,7 +26,7 @@ export class App extends Component {
   employees = () => {
     this.setState((state) => ({
       allEmployees: state.data.length,
-      bonus: state.data.filter((item) => item.increase === true).length
+      bonus: state.data.filter((item) => item.increase).length
     }));
   }
 
@@ -107,28 +109,69 @@ export class App extends Component {
     this.employees();
   }
 
-  render = () => (
-    <div className='app'>
-      <AppInfo
-        allEmployees={this.state.allEmployees}
-        bonus={this.state.bonus}
-      />
+  searchEmployees = (data, search) => {
+    if (search.length === 0) {
+      return data;
+    }
+    return data.filter((item) => item.name.toLowerCase().indexOf(search.toLowerCase()) > -1);
+  }
 
-      <div className='search-panel'>
-        <SearchPanel />
-        <AppFilter />
+  onUpdateSearch = (search) => {
+    // this.setState({search: search});
+    this.setState({search});
+  }
+
+  employeesFilter = (data, filter) => {
+    switch (filter) {
+      case 'rise':
+        return data.filter((item) => item.rise);
+      case 'moreThen1000':
+        return data.filter((item) => item.salary > 1000);
+      default:
+        return data;
+    }
+  }
+
+  onFilterSelect = (filter) => {
+    this.setState({filter});
+  }
+
+  render = () => {
+
+    const {data, bonus, allEmployees, search, filter} = this.state;
+    // без фильтра кнопок
+    // const visibleData = this.searchEmployees(data, search);
+    const visibleData = this.employeesFilter(this.searchEmployees(data, search), filter);
+
+    return (
+      <div className='app'>
+        <AppInfo
+          allEmployees={allEmployees}
+          bonus={bonus}
+        />
+
+        <div className='search-panel'>
+          <SearchPanel
+            onUpdateSearch={this.onUpdateSearch} 
+          />
+          <AppFilter
+            filter={filter}
+            onFilterSelect={this.onFilterSelect} 
+          />
+        </div>
+
+        <EmployeesList
+          // employeesData={data} 
+          employeesData={visibleData} 
+          onDelete={this.deleteItem}
+          onToggleProp={this.onToggleProp}
+          // onToggleIncrease={this.onToggleIncrease}
+          // onToggleRise={this.onToggleRise}
+        />
+        <EmployeesAddForm
+          addItem={this.addItem}
+        />
       </div>
-
-      <EmployeesList 
-        employeesData={this.state.data} 
-        onDelete={this.deleteItem}
-        onToggleProp={this.onToggleProp}
-        // onToggleIncrease={this.onToggleIncrease}
-        // onToggleRise={this.onToggleRise}
-      />
-      <EmployeesAddForm
-        addItem={this.addItem}
-      />
-    </div>
-  );
+    );
+  }
 };
