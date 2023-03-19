@@ -5,18 +5,17 @@ import { CharInfo } from '../charInfo';
 
 import decoration from '../../resources/img/vision.png';
 
-export const App = () => {
-  return (
-    <div className='app'>
-      <AppHeader />
-      <main>
-        <RandomChar />
-        <div className='char__content'>
-          <CharList />
-          <CharInfo />
-        </div>
-        <img className='bg-decoration' src={decoration} alt='vision' />
-      </main>
-    </div>
-  );
-};
+export const App = () => (
+  <div className='app'>
+    <AppHeader />
+    <main>
+      <RandomChar />
+      <div className='char__content'>
+        <CharList />
+        <CharInfo />
+      </div>
+      <img className='bg-decoration' src={decoration} alt='vision' />
+    </main>
+  </div>
+);
+
