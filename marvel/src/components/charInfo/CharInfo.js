@@ -2,8 +2,8 @@ import { Component } from 'react';
 
 import { MarvelService } from '../../services/marvelService/MarvelService';
 import { Skeleton } from '../skeleton/Skeleton';
-import { ErrorMessage } from '../errorMessage/ErrorMessage';
-import { Spinner } from '../spinner/Spinner';
+import { notImage } from '../../resources/data/not-image';
+import { isErrorOrSpinner } from '../../resources/data/is-error-or-spinner';
 
 import './charInfo.scss';
 
@@ -65,15 +65,12 @@ export class CharInfo extends Component {
     const { char, loading, error } = this.state
 
     const skeleton = char || loading || error ? null : <Skeleton />;
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading ? <Spinner /> : null;
     const content = !(loading || error || !char) ? <View char={char} /> : null;
 
     return (
       <div className='char__info'>
+        {isErrorOrSpinner(loading, error)}
         {skeleton}
-        {errorMessage}
-        {spinner}
         {content}
       </div>
     );
@@ -82,8 +79,6 @@ export class CharInfo extends Component {
 
 const View = ({ char }) => {
   const { name, description, thumbnail, homepage, wiki, comics } = char;
-
-  const notImage = 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg';
 
   const isComicsList = (comics) => { 
     if (comics.length > 9) {

@@ -1,8 +1,8 @@
 import { Component } from 'react';
 
 import { MarvelService } from '../../services/marvelService/MarvelService';
-import { Spinner } from '../spinner/Spinner';
-import { ErrorMessage } from '../errorMessage/ErrorMessage';
+import { notImage } from '../../resources/data/not-image';
+import { isErrorOrSpinner } from '../../resources/data/is-error-or-spinner';
 
 import './randomChar.scss';
 
@@ -56,14 +56,11 @@ export class RandomChar extends Component {
   render = () => {
     const {char, loading, error} = this.state
 
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading ? <Spinner /> : null;
     const content = !(loading || error) ? <View char={char} /> : null;
 
     return (
       <div className='randomchar'>
-        {errorMessage}
-        {spinner}
+        {isErrorOrSpinner(loading, error)}
         {content}
         <div className='randomchar__static'>
           <p className='randomchar__title'>
@@ -84,8 +81,6 @@ export class RandomChar extends Component {
 
 const View = ({ char }) => {
   const {name, description, thumbnail, homepage, wiki} = char;
-
-  const notImage = 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg';
 
   const isDescription = (description) => {
     if (description === '') {

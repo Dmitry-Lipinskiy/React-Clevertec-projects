@@ -2,8 +2,7 @@ import { Component } from 'react';
 // import classNames from 'classnames';
 
 import { MarvelService } from '../../services/marvelService/MarvelService';
-import { Spinner } from '../spinner/Spinner';
-import { ErrorMessage } from '../errorMessage/ErrorMessage';
+import { isErrorOrSpinner } from '../../resources/data/is-error-or-spinner';
 
 import './charList.scss';
 
@@ -89,14 +88,11 @@ export class CharList extends Component {
 
     const charListItems = this.charListItems(charList);
 
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading ? <Spinner /> : null;
     const content = !(loading || error) ? charListItems : null;
 
     return (
       <div className='char__list'>
-        {errorMessage}
-        {spinner}
+        {isErrorOrSpinner(loading, error)}
         {content}
         <button className='button button__main button__long'
           disabled={newItemLoading}

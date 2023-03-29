@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import { App } from './components/app';
+import { ErrorBoundary } from './components/errorBoundary';
 // import { MarvelService } from './services/marvelService';
 
 import './style/style.scss';
@@ -18,6 +19,8 @@ import './style/style.scss';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   // </React.StrictMode>
 );
