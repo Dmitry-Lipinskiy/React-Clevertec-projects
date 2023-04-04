@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 // import classNames from 'classnames';
 
 import { MarvelService } from '../../services/marvelService/MarvelService';
@@ -14,9 +14,12 @@ export class CharList extends Component {
     error: false,
     offset: 210,
     newItemLoading: false,
-    charEnded: false
+    charEnded: false,
+    index: null
   }
 
+  ref = [];
+  
   marvelService = new MarvelService();
 
   componentDidMount() {
@@ -64,14 +67,34 @@ export class CharList extends Component {
     });
   };
 
+  setRef = (el) => {
+    this.ref.push(el);
+  };
+
+  changeStyleCharSelected = (id, index) => {
+    this.props.onCharSelected(id);
+
+    if (this.ref[index]) {
+      this.ref[index].classList.add('char__item_selected');
+    }
+
+    this.setState({index});
+
+    if (this.ref[this.state.index]) {
+      this.ref[this.state.index].classList.remove('char__item_selected');
+    }
+  }
+
   charListItems = (charList) => (
     <ul className='char__grid'>
-      {charList.map((item) => (
+      {charList.map((item, index) => (
         <li 
           className='char__item'
           // className='char__item char__item_selected'
           key={item.id}
-          onClick={() => this.props.onCharSelected(item.id)}
+          ref={this.setRef}
+          // onClick={() => this.props.onCharSelected(item.id)}
+          onClick={() => this.changeStyleCharSelected(item.id, index)}
         >
           <img 
             src={item.thumbnail} 
