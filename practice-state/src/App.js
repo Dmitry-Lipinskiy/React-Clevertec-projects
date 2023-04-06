@@ -57,7 +57,6 @@
 
 // export default App;
 
-import React from 'react';
 import { useState } from 'react';
 
 import './App.css';
@@ -90,7 +89,7 @@ const App = () => {
     <div className='app'>
       <div className='counter'>{counter}</div>
       <div className='controls'>
-      <button onClick={isIncrease}>INC</button>
+        <button onClick={isIncrease}>INC</button>
         <button onClick={isDecrease}>DEC</button>
         <button onClick={isRondom}>RND</button>
         <button onClick={isReset}>RESET</button>
