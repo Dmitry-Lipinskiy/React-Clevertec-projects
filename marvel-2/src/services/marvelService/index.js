@@ -1,1 +1,1 @@
-export { MarvelService } from './MarvelService';
+export { useMarvelService } from './MarvelService';

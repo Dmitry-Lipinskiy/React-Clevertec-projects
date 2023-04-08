@@ -1,9 +1,11 @@
 import { useState } from 'react';
 
 import { AppHeader } from '../appHeader';
+// import { AppBanner } from '../appBanner';
 import { RandomChar } from '../randomChar';
 import { CharList } from '../charList';
 import { CharInfo } from '../charInfo';
+// import { ComicsList } from '../comicsList';
 
 import decoration from '../../resources/img/vision.png';
 
@@ -26,6 +28,8 @@ export const App = () => {
           <CharInfo charId={selectedChar} />
         </div>
         <img className='bg-decoration' src={decoration} alt='vision' />
+        {/* <AppBanner />
+        <ComicsList /> */}
       </main>
     </div>
   );

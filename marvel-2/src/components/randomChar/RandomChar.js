@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { MarvelService } from '../../services/marvelService/MarvelService';
+import { useMarvelService } from '../../services/marvelService/MarvelService';
 import { notImage } from '../../resources/data/not-image';
 import { isErrorOrSpinner } from '../../resources/data/is-error-or-spinner';
 
@@ -11,39 +11,29 @@ import mjolnir from '../../resources/img/mjolnir.png';
 export const RandomChar = () => {
 
   const [char, setChar] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
-  const marvelService = new MarvelService();
+  const { loading, error, getCharacter, clearError } = useMarvelService();
 
   useEffect(() => {
     updateChar();
+
+    // const timerId = setInterval(updateChar, 30000);
+    // return () => {
+    //   clearInterval(timerId);
+    // };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onCharLoaded = (char) => {
     setChar(char);
-    setLoading(false);
-  };
-
-  const onCharLoading = () => {
-    setLoading(true);
-  };
-
-  const onError = () => {
-    setLoading(false);
-    setError(true);
   };
 
   const updateChar = () => {
+    clearError();
+
     const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-
-    onCharLoading();
-
-    marvelService
-      .getCharacter(id)
-      .then(onCharLoaded)
-      .catch(onError);
+    getCharacter(id).then(onCharLoaded);
   };
 
   const content = !(loading || error) ? <View char={char} /> : null;
@@ -71,16 +61,6 @@ export const RandomChar = () => {
 const View = ({ char }) => {
   const {name, description, thumbnail, homepage, wiki} = char;
 
-  const isDescription = (description) => {
-    if (description === '') {
-      return 'There is no description for this character.';
-    }  
-    if (description.length >= 210) {
-      return description.slice(0, 210) + '...';
-    } 
-    return description;
-  };
-
   return (
     <div className='randomchar__block'>
       <img 
@@ -91,7 +71,7 @@ const View = ({ char }) => {
       />
       <div className='randomchar__info'>
         <p className='randomchar__name'>{name}</p>
-        <p className='randomchar__descr'>{isDescription(description)}</p>
+        <p className='randomchar__descr'>{description}</p>
         <div className='randomchar__btns'>
           <a href={homepage} className='button button__main'>
             <div className='inner'>homepage</div>
