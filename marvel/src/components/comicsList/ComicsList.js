@@ -1,34 +1,107 @@
+import { Component } from 'react';
+
+import { isErrorOrSpinner } from '../../resources/data/is-error-or-spinner';
+import { MarvelService } from '../../services/marvelService/MarvelService';
+
 import './comicsList.scss';
 
-import uw from '../../resources/img/UW.png';
-// import xMen from '../../resources/img/x-men.png';
+export class ComicsList extends Component {
 
-export const ComicsList = () => {
+  state = {
+    comicsList: [],
+    loading: true,
+    error: false,
+    offset: 0,
+    newItemLoading: false,
+    comicsEnded: false,
+  }
+  
+  marvelService = new MarvelService();
 
-  const comicsList = [];
+  componentDidMount() {
+    this.onRequest();
+  };
 
-  return (
-    <div className='comics__list'>
-      <ul className='comics__grid'>
-        {comicsList.map((item) => (
-          <li 
-            className='comics__item'
-            key={item.id}
-          >
-            <a href='#'>
-              <img src={uw} alt='ultimate war' className='comics__item-img' />
-              <div className='comics__item-name'>
-                ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB
-              </div>
-              <div className='comics__item-price'>9.99$</div>
-            </a>
-          </li>
-        ))}
-      </ul>
-      <button className='button button__main button__long'>
-        <div className='inner'>load more</div>
-      </button>
-    </div>
+  onRequest = (offset) => {
+    this.onComicsListLoading();
+    this.marvelService
+      .getAllComics(offset)
+      .then(this.onComicsListLoaded)
+      .catch(this.onError)
+  };
+
+  onComicsListLoading = () => {
+    this.setState({
+      newItemLoading: true
+    });
+  };
+
+  onComicsListLoaded = (newComicsList) => {
+    let ended = false;
+    if (newComicsList.length < 8) {
+      ended = true;
+    }
+    this.setState(({offset, comicsList}) => ({
+      comicsList: [...comicsList, ...newComicsList],
+      loading: false,
+      newItemLoading: false,
+      offset: offset + 8,
+      comicsEnded: ended
+    }));
+  };
+
+  onError = () => {
+    this.setState({
+      loading: false,
+      error: true
+    });
+  };
+
+  comicsListItems = (comicsList) => (
+    <ul className='comics__grid'>
+      {comicsList.map((item, i) => (
+        <li 
+          className='comics__item'
+          key={i}
+        >
+          {/* <a href='#'> */}
+            <img 
+              src={item.thumbnail} 
+              alt={item.title} 
+              className='comics__item-img' 
+            />
+            <div className='comics__item-name'>
+              {item.title}
+            </div>
+            <div className='comics__item-price'>
+              {item.price}
+            </div>
+          {/* </a> */}
+        </li>
+      ))}
+    </ul>
   );
+
+  render = () => {
+    const { comicsList, loading, error, newItemLoading, comicsEnded, offset } = this.state;
+
+    const comicsListItems = this.comicsListItems(comicsList);
+
+    const content = !(loading || error) ? comicsListItems : null;
+
+    return (
+      <div className='comics__list'>
+        {isErrorOrSpinner(loading, error)}
+        {content}
+        <button className='button button__main button__long'
+          disabled={newItemLoading}
+          style={{display: comicsEnded ? 'none' : 'block'}}
+          onClick={() => this.onRequest(offset)}
+        >
+          <div className='inner'>load more</div>
+        </button>
+      </div>
+    );
+  };
 };
 
