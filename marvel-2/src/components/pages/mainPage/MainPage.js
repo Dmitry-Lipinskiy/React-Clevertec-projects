@@ -6,7 +6,7 @@ import { CharInfo } from "../../charInfo";
 
 import decoration from '../../../resources/img/vision.png';
 
-export const MainPage = () => {
+const MainPage = () => {
 
   const [selectedChar, setSelectedChar] = useState(null);
   
@@ -25,3 +25,5 @@ export const MainPage = () => {
     </>
   );
 };
+
+export default MainPage;

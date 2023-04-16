@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { isErrorOrSpinner } from '../../resources/data/is-error-or-spinner';
 import { MarvelService } from '../../services/marvelService/MarvelService';
@@ -63,8 +64,9 @@ export class ComicsList extends Component {
         <li 
           className='comics__item'
           key={i}
+          onClick={() => this.props.onComicSelected(item.id)}
         >
-          {/* <a href='#'> */}
+          <Link to={`/comics/${item.id}`}>
             <img 
               src={item.thumbnail} 
               alt={item.title} 
@@ -76,7 +78,7 @@ export class ComicsList extends Component {
             <div className='comics__item-price'>
               {item.price}
             </div>
-          {/* </a> */}
+          </Link>
         </li>
       ))}
     </ul>

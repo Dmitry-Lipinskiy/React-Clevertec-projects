@@ -47,7 +47,7 @@ export class MarvelService {
     return res.data.results.map(this._transformComics);
   }
 
-  getComics = async (id) => {
+  getComic = async (id) => {
     const res = await this.getResourse(
       `${this._apiBase}comics/${id}?${this._apiKey}`
     );
@@ -69,5 +69,4 @@ export class MarvelService {
         : 'not available'
     };
   };
-  
 };

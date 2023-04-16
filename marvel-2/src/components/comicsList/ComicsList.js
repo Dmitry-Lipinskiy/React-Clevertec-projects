@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import { useMarvelService } from '../../services/marvelService/MarvelService';
 import { ErrorMessage } from '../errorMessage/ErrorMessage';
@@ -43,7 +44,7 @@ export const ComicsList = () => {
           className='comics__item'
           key={i}
         >
-          {/* <a href='#'> */}
+          <Link to={`/comics/${item.id}`}>
             <img 
               src={item.thumbnail} 
               alt={item.title} 
@@ -55,7 +56,7 @@ export const ComicsList = () => {
             <div className='comics__item-price'>
               {item.price}
             </div>
-          {/* </a> */}
+          </Link>
         </li>
       ))}
     </ul>

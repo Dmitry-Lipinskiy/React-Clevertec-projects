@@ -1,10 +1,10 @@
 import { AppBanner } from "../../appBanner";
 import { ComicsList } from "../../comicsList";
 
-export const ComicsPage = () => (
+export const ComicsPage = (props) => (
   <>
     <AppBanner />
-    <ComicsList />
+    <ComicsList onComicSelected={props.onComicSelected} />
   </>
 );
 
