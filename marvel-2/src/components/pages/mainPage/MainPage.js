@@ -5,6 +5,7 @@ import { CharList } from "../../charList";
 import { CharInfo } from "../../charInfo";
 
 import decoration from '../../../resources/img/vision.png';
+import { CharSearchForm } from "../../charSearchForm";
 
 const MainPage = () => {
 
@@ -19,7 +20,10 @@ const MainPage = () => {
       <RandomChar />
       <div className='char__content'>
         <CharList onCharSelected={onCharSelected} />
-        <CharInfo charId={selectedChar} />
+        <div>
+          <CharInfo charId={selectedChar} />
+          <CharSearchForm />
+        </div>
       </div>
       <img className='bg-decoration' src={decoration} alt='vision' />
     </>
