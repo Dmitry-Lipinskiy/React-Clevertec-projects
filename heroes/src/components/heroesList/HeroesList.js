@@ -2,10 +2,11 @@ import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { heroesFetching, heroesFetched, heroesFetchingError, heroDeleted } from '../../actions';
+import { fetchHeroes, onDeleteHeroes } from '../../actions';
 import { useHttp } from '../../hooks/http.hook';
 import { HeroesListItem } from '../heroesListItem';
 import { Spinner } from '../spinner';
+import { activeFilterSelector, heroesLoadingStatusSelector, heroesSelector } from '../../selectors';
 
 // Задача для этого компонента:
 // При клике на 'крестик' идет удаление персонажа из общего состояния
@@ -25,8 +26,10 @@ export const HeroesList = () => {
   // });
 
   const filtredHeroesSelector = createSelector(
-    (state) => state.filters.activeFilter,
-    (state) => state.heroes.heroes,
+    // (state) => state.filters.activeFilter,
+    activeFilterSelector,
+    // (state) => state.heroes.heroes,
+    heroesSelector,
     (filter, heroes) => {
       if (filter === 'all') {
         return heroes;
@@ -37,26 +40,29 @@ export const HeroesList = () => {
   );
 
   const filteredHeroes = useSelector(filtredHeroesSelector);
+  const heroesLoadingStatus = useSelector(heroesLoadingStatusSelector);
 
-  const heroesLoadingStatus = useSelector((state) => state.heroes.heroesLoadingStatus);
+  // const heroesLoadingStatus = useSelector((state) => state.heroes.heroesLoadingStatus);
 
   const dispatch = useDispatch();
   const { request } = useHttp();
 
   useEffect(() => {
-    dispatch(heroesFetching());
-    request('http://localhost:3001/heroes')
-      .then((data) => dispatch(heroesFetched(data)))
-      .catch(() => dispatch(heroesFetchingError()));
+    // dispatch(heroesFetching());
+    // request('http://localhost:3001/heroes')
+    //   .then((data) => dispatch(heroesFetched(data)))
+    //   .catch(() => dispatch(heroesFetchingError()));
+    dispatch(fetchHeroes(request));
     // eslint-disable-next-line
   }, []);
 
   // Ф-ция берет id и по нему удоляет ненужного персонажа из store если запрос прошел успешно
   const onDelete = useCallback((id) => {
-    request(`http://localhost:3001/heroes/${id}`, 'DELETE')
-      .then((data) => console.log(data, 'Deleted'))
-      .then(dispatch(heroDeleted(id)))
-      .catch((err) => console.log(err));
+    // request(`http://localhost:3001/heroes/${id}`, 'DELETE')
+    //   .then((data) => console.log(data, 'Deleted'))
+    //   .then(dispatch(heroDeleted(id)))
+    //   .catch((err) => console.log(err));
+    dispatch(onDeleteHeroes(request, id));
     // eslint-disable-next-line
   }, [request]);
 

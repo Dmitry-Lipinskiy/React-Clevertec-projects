@@ -1,23 +1,33 @@
+import classNames from 'classnames';
+
 export const HeroesListItem = ({ name, description, element, onDelete }) => {
 
-  let elementClassName;
+  // let elementClassName;
 
-  switch (element) {
-    case 'fire':
-      elementClassName = 'bg-danger bg-gradient';
-      break;
-    case 'water':
-      elementClassName = 'bg-primary bg-gradient';
-      break;
-    case 'wind':
-      elementClassName = 'bg-success bg-gradient';
-      break;
-    case 'earth':
-      elementClassName = 'bg-secondary bg-gradient';
-      break;
-    default:
-      elementClassName = 'bg-warning bg-gradient';
-  }
+  // switch (element) {
+  //   case 'fire':
+  //     elementClassName = 'bg-danger bg-gradient';
+  //     break;
+  //   case 'water':
+  //     elementClassName = 'bg-primary bg-gradient';
+  //     break;
+  //   case 'wind':
+  //     elementClassName = 'bg-success bg-gradient';
+  //     break;
+  //   case 'earth':
+  //     elementClassName = 'bg-secondary bg-gradient';
+  //     break;
+  //   default:
+  //     elementClassName = 'bg-warning bg-gradient';
+  // }
+
+  const elementClassName = classNames(
+    'bg-gradient', {
+      'bg-danger': element === 'fire',
+      'bg-primary': element === 'water',
+      'bg-success': element === 'wind',
+      'bg-secondary': element === 'earth',
+  });
 
   return (
     <li

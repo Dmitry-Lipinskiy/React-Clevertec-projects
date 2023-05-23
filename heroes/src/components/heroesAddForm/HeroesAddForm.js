@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
-import { heroCreated } from '../../actions';
+import { addHeroes } from '../../actions';
 import { useHttp } from '../../hooks/http.hook';
+import { filtersSelector, filtersLoadingStatusSelector } from '../../selectors';
 
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
@@ -21,10 +22,14 @@ export const HeroesAddForm = () => {
   const [heroDescription, setHeroDescription] = useState('');
   const [heroElement, setHeroElement] = useState('');
 
-  const { filters, filtersLoadingStatus } = useSelector(
-    // (state) => state
-    (state) => state.filters
-  );
+  // const { filters, filtersLoadingStatus } = useSelector(
+  //   // (state) => state
+  //   (state) => state.filters
+  // );
+
+  const filters = useSelector(filtersSelector);
+  const filtersLoadingStatus = useSelector(filtersLoadingStatusSelector);
+
   const dispatch = useDispatch();
   const { request } = useHttp();
 
@@ -40,10 +45,12 @@ export const HeroesAddForm = () => {
 
     // Отпровляем данные на сервер в формате JSON
     // Если запрос успешен - отправляем персонажа в store
-    request('http://localhost:3001/heroes', 'POST', JSON.stringify(newHero))
-      .then((res) => console.log(res, 'Отправка успешна'))
-      .then(dispatch(heroCreated(newHero)))
-      .catch((err) => console.log(err));
+    // request('http://localhost:3001/heroes', 'POST', JSON.stringify(newHero))
+    //   .then((res) => console.log(res, 'Отправка успешна'))
+    //   .then(dispatch(heroCreated(newHero)))
+    //   .catch((err) => console.log(err));
+
+    dispatch(addHeroes(request, newHero));
 
     // Очищаем форму после отправки
     setHeroName('');
@@ -52,9 +59,13 @@ export const HeroesAddForm = () => {
   };
 
   const renderFilters = (filters, status) => {
-    if (status === 'loading') {
+
+    const isLoding = status === 'loading';
+    const isError = status === 'error';
+
+    if (isLoding) {
       return <option>Загрузка элементов</option>;
-    } else if (status === 'error') {
+    } else if (isError) {
       return <option>Ошибка загрузки</option>;
     }
 
